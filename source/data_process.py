@@ -19,6 +19,7 @@ writer = tf.python_io.TFRecordWriter(filename)
 # 顺序读取文件夹下的图片
 fold = os.listdir("/home/mxqian/Projects/Captcha/captcha_data/data_train")
 for i in fold:
+    # print(i)
     fold1 = os.listdir("/home/mxqian/Projects/Captcha/captcha_data/data_train/"+i)
     # 使用tensorflow读入图片，并转换为tfrecord格式
     with tf.Session() as sess:
@@ -31,8 +32,8 @@ for i in fold:
             img_data = tf.image.convert_image_dtype(img_data, dtype=tf.float32)
             # 转换为字符串
             img_data = img_data.eval().tostring()
-            label = one_hot_encoder.enc.transform(ord(file)).toarray()
-            # print(label)
+            label = one_hot_encoder.enc.transform(ord(i[0])).toarray()
+            print(i[0])
             # 文件中包含两种数据类型，一种为样本的数据，一种为样本的类标
             example = tf.train.Example(features=tf.train.Features(feature={
                 'data': _bytes_feature(img_data),
@@ -50,6 +51,7 @@ writer1 = tf.python_io.TFRecordWriter(filename_test)
 # 顺序读取文件夹下的图片
 fold = os.listdir("/home/mxqian/Projects/Captcha/captcha_data/data_test")
 for i in fold:
+    # print(i)
     fold1 = os.listdir("/home/mxqian/Projects/Captcha/captcha_data/data_test/"+i)
     # 使用tensorflow读入图片，并转换为tfrecord格式
     with tf.Session() as sess:
@@ -62,8 +64,8 @@ for i in fold:
             img_data = tf.image.convert_image_dtype(img_data, dtype=tf.float32)
             # 转换为字符串
             img_data = img_data.eval().tostring()
-            label = one_hot_encoder.enc.transform(ord(file)).toarray()
-            print(np.argmax(label))
+            label = one_hot_encoder.enc.transform(ord(i[0])).toarray()
+            print(i[0])
             # 文件中包含两种数据类型，一种为样本的数据，一种为样本的类标
             example = tf.train.Example(features=tf.train.Features(feature={
                 'data': _bytes_feature(img_data),

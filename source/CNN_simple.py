@@ -5,7 +5,7 @@ import one_hot_encoder
 sess = tf.InteractiveSession()
 
 # 输入样本向量的大小
-x_size = 16*16
+x_size = 120*50
 # 输入类标向量的大小
 label_size = 62
 # 二位灰度图像的大小
