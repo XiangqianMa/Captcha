@@ -53,7 +53,7 @@ image_batch_test0, label_batch_test = tf.train.batch([image_test, label_test], b
 # 转化成图像处理可以识别的格式
 image_batch_test = tf.decode_raw(image_batch_test0, tf.uint8)
 
-# # # 创建对话
+# # 创建对话
 # with tf.Session() as sess:
 #     tf.global_variables_initializer()
 #     coord = tf.train.Coordinator()
@@ -61,16 +61,17 @@ image_batch_test = tf.decode_raw(image_batch_test0, tf.uint8)
 #     a = sess.run(image_train)
 #     # print(len(a))
 #
-#     for i in range(10):
-#         cur_example_batch, cur_label_batch = sess.run([image_batch_test, label_batch_test])
+#     for i in range(62):
+#         cur_example_batch, cur_label_batch = sess.run([image_batch_test, label_test])
 #         # print(type(cur_label_batch))
 #         # print(type(cur_example_batch))
-#         print(cur_example_batch[0])
+#         # print(cur_example_batch[0])
 #         # imag = np.resize(cur_example_batch[0], )
-#         imag = cur_example_batch[9].reshape((16, 16))
-#         plt.imshow(imag)
-#         plt.show()
+#         # imag = cur_example_batch[9].reshape((16, 16))
+#         # plt.imshow(imag)
+#         # plt.show()
 #         print(np.shape(cur_example_batch))
+#         print(chr(cur_label_batch))
 #     coord.request_stop()
 #     coord.join(threads)
 

@@ -28,16 +28,17 @@ for i in fold:
             image_raw_data = tf.gfile.FastGFile("/home/mxqian/Projects/Captcha/captcha_data/data_train/" + i + "/"
                                                 + file, 'r').read()
             img_data = tf.image.decode_jpeg(image_raw_data)
-            print(img_data.eval())
+            # print(img_data.eval())
 
             # 转换为字符串
             img_data = img_data.eval().tostring()
             # print(len(img_data))
-            label = one_hot_encoder.enc.transform(ord(i[0])).toarray()
+            label = ord(i[0])
+            print(label)
             # 文件中包含两种数据类型，一种为样本的数据，一种为样本的类标
             example = tf.train.Example(features=tf.train.Features(feature={
                 'data': _bytes_feature(img_data),
-                'label': _int64_feature(np.argmax(label))
+                'label': _int64_feature(label)
                 }))
             # 将一个example写入TFRecord文件
             writer.write(example.SerializeToString())
@@ -63,11 +64,11 @@ for i in fold:
 
             # 转换为字符串
             img_data = img_data.eval().tostring()
-            label = one_hot_encoder.enc.transform(ord(i[0])).toarray()
+            label = ord(i)
             # 文件中包含两种数据类型，一种为样本的数据，一种为样本的类标
             example = tf.train.Example(features=tf.train.Features(feature={
                 'data': _bytes_feature(img_data),
-                'label': _int64_feature(np.argmax(label))
+                'label': _int64_feature(label)
                 }))
             # 将一个example写入TFRecord文件
             writer1.write(example.SerializeToString())
