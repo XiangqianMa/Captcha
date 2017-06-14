@@ -1,13 +1,11 @@
 import tensorflow as tf
-from tensorflow.examples.tutorials.mnist import input_data
 import extract_data
+import one_hot_encoder
 
-
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 sess = tf.InteractiveSession()
 
 # 输入样本向量的大小
-x_size = 7200
+x_size = 16*16
 # 输入类标向量的大小
 label_size = 62
 # 二位灰度图像的大小
@@ -20,6 +18,8 @@ conv1_features = 32
 conv2_features = 64
 ac_nodes = 1024
 softmax_out = 62
+
+
 # 初始化权重
 def weight_variable(shape):
     # using truncated_normal to create weight variable which obeys the truncated normal(standard deviation: 0.1)
@@ -85,16 +85,24 @@ correct_prediction = tf.equal(tf.argmax(y_out, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 # 开始训练
+# 还需要完成训练数据和测试数据的划分。
 tf.global_variables_initializer().run()
+coord = tf.train.Coordinator()
+threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 for i in range(20000):
-    image, label = sess.run([extract_data.image_batch, extract_data.label_batch])
+    image_train, label_train = sess.run([extract_data.image_batch_train, extract_data.label_batch_train])
+    label_train = one_hot_encoder.enc.transform(label_train).toarray()
     if i % 100 == 0:
-        train_accuracy = accuracy.eval(feed_dict={x: image, y_: label, keep_prob: 1.0})
+        train_accuracy = accuracy.eval(feed_dict={x: image_train, y_: label_train, keep_prob: 1.0})
         print("step %d, training accuracy %g"%(i, train_accuracy))
-    train_step.run(feed_dict={x: image, y_: label, keep_prob: 0.5})
+    train_step.run(feed_dict={x: image_train, y_: label_train, keep_prob: 0.5})
 
-print("test accuracy %g"%accuracy.eval(feed_dict={x:mnist.test.images, y_: mnist.test.labels, keep_prob: 1}))
-
+image_test, label_test = sess.run([extract_data.image_batch_test, extract_data.label_batch_test])
+label_test = one_hot_encoder.enc.transform(label_test).toarray()
+print("test accuracy %g"%accuracy.eval(feed_dict={x: image_test, y_: label_test,
+                                                  keep_prob: 1}))
+coord.clear_stop()
+coord.join(threads)
 
 
 
