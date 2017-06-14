@@ -99,8 +99,8 @@ for i in range(20000):
 
 image_test, label_test = sess.run([extract_data.image_batch_test, extract_data.label_batch_test])
 label_test = one_hot_encoder.enc.transform(label_test).toarray()
-print("test accuracy %g"%accuracy.eval(feed_dict={x: image_test, y_: label_test,
-                                                  keep_prob: 1}))
+# print("test accuracy %g"%accuracy.eval(feed_dict={x: image_test, y_: label_test,
+#                                                   keep_prob: 1}))
 coord.clear_stop()
 coord.join(threads)
 

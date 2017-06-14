@@ -28,12 +28,12 @@ for i in fold:
             image_raw_data = tf.gfile.FastGFile("/home/mxqian/Projects/Captcha/captcha_data/data_train/" + i + "/"
                                                 + file, 'r').read()
             img_data = tf.image.decode_jpeg(image_raw_data)
-            # 转换为实数形式
-            img_data = tf.image.convert_image_dtype(img_data, dtype=tf.float32)
+            print(img_data.eval())
+
             # 转换为字符串
             img_data = img_data.eval().tostring()
+            # print(len(img_data))
             label = one_hot_encoder.enc.transform(ord(i[0])).toarray()
-            print(i[0])
             # 文件中包含两种数据类型，一种为样本的数据，一种为样本的类标
             example = tf.train.Example(features=tf.train.Features(feature={
                 'data': _bytes_feature(img_data),
@@ -60,12 +60,10 @@ for i in fold:
             image_raw_data = tf.gfile.FastGFile("/home/mxqian/Projects/Captcha/captcha_data/data_test/" + i + "/"
                                                 + file, 'r').read()
             img_data = tf.image.decode_jpeg(image_raw_data)
-            # 转换为实数形式
-            img_data = tf.image.convert_image_dtype(img_data, dtype=tf.float32)
+
             # 转换为字符串
             img_data = img_data.eval().tostring()
             label = one_hot_encoder.enc.transform(ord(i[0])).toarray()
-            print(i[0])
             # 文件中包含两种数据类型，一种为样本的数据，一种为样本的类标
             example = tf.train.Example(features=tf.train.Features(feature={
                 'data': _bytes_feature(img_data),
