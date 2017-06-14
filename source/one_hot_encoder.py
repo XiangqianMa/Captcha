@@ -1,6 +1,14 @@
 from sklearn.preprocessing import OneHotEncoder
 import numpy as np
 
+
+def array_fit(array):
+    n = np.size(array)
+    array_return = np.zeros([n, 62])
+    for m in range(n):
+        array_return[m, :] = enc.transform(array[m]).toarray()
+    return array_return
+
 # 将0~9转换为ascall码存入数组a中
 a = np.zeros([62, 1])
 for i in range(ord('9')-ord('0')+1):
